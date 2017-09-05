@@ -59,7 +59,7 @@ install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/pyside2uic
         PATTERN "*pyside2uic\\__init__.py" EXCLUDE)
 
 # Man pages for pyside2-uic
-if (NOT win32)
+if (NOT WIN32)
     file(GLOB manpages "${CMAKE_CURRENT_SOURCE_DIR}/pyside2uic/*.1")
     install(FILES ${manpages} DESTINATION share/man/man1)
 endif()
