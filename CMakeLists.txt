@@ -43,6 +43,12 @@ install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/pyside2-uic
         GROUP_EXECUTE GROUP_READ
         WORLD_EXECUTE WORLD_READ)
 
+# on win32 we cannot rely on the shebang for the shell to interpret the pyside2-uic command
+if (WIN32)
+    file (WRITE ${CMAKE_CURRENT_BINARY_DIR}/pyside2-uic.bat "python %~dp0pyside2-uic %*\n")
+    install (FILES ${CMAKE_CURRENT_BINARY_DIR}/pyside2-uic.bat DESTINATION bin)
+endif ()
+
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/pyside2uic/__init__.py"
         DESTINATION "${PYTHON_SITE_PACKAGES}/pyside2uic")
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/pyside2uic
