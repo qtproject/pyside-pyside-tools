@@ -22,7 +22,7 @@
 
 __all__ = ("compileUi", "compileUiDir", "widgetPluginPath")
 
-__version__ = "@pyside_tools_VERSION@"
+__version__ = "@pyside2_tools_VERSION@"
 
 from pyside2uic.Compiler import indenter, compiler
 
