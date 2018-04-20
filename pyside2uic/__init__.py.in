@@ -28,7 +28,8 @@ from pyside2uic.Compiler import indenter, compiler
 
 _header = """# -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '%s'
+# Form implementation generated from reading ui file '%s',
+# licensing of '%s' applies.
 #
 # Created: %s
 #      by: pyside2-uic %s running on PySide2 %s
@@ -137,7 +138,7 @@ def compileUi(uifile, pyfile, execute=False, indent=4, from_imports=False):
     indenter.indentwidth = indent
 
     global PySideToolsVersion
-    pyfile.write(_header % (uifname, ctime(), __version__, PySide2.__version__))
+    pyfile.write(_header % (uifname, uifname, ctime(), __version__, PySide2.__version__))
 
     winfo = compiler.UICompiler().compileUi(uifile, pyfile, from_imports)
 
