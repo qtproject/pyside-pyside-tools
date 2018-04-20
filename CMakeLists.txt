@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.1)
 project(pyside2-tools)
 
 find_package(Shiboken2 2.0.0 REQUIRED)
