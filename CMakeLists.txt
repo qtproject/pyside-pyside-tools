@@ -43,12 +43,6 @@ install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/pyside2-uic
         GROUP_EXECUTE GROUP_READ
         WORLD_EXECUTE WORLD_READ)
 
-# on win32 we cannot rely on the shebang for the shell to interpret the pyside2-uic command
-if (WIN32)
-    file (WRITE ${CMAKE_CURRENT_BINARY_DIR}/pyside2-uic.bat "python %~dp0pyside2-uic %*\n")
-    install (FILES ${CMAKE_CURRENT_BINARY_DIR}/pyside2-uic.bat DESTINATION bin)
-endif ()
-
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/pyside2uic/__init__.py"
         DESTINATION "${SITE_PACKAGE}/pyside2uic")
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/pyside2uic
@@ -84,6 +78,14 @@ add_custom_target(dist
 set(PYSIDE2RCC_EXECUTABLE ${CMAKE_CURRENT_BINARY_DIR}/pyrcc/pyside2-rcc)
 add_subdirectory(pyrcc)
 add_subdirectory(pylupdate)
+
+# pyside2-rcc, shiboken and pyside2-lupdate entrypoints
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/pyside_tool.py
+        DESTINATION bin
+        PERMISSIONS
+        OWNER_EXECUTE OWNER_WRITE OWNER_READ
+        GROUP_EXECUTE GROUP_READ
+        WORLD_EXECUTE WORLD_READ)
 
 if (BUILD_TESTS)
     enable_testing()
