@@ -65,6 +65,8 @@ configure_file("${CMAKE_CURRENT_SOURCE_DIR}/cmake_uninstall.cmake"
 add_custom_target(uninstall "${CMAKE_COMMAND}"
                   -P "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake")
 
+# Does not work with ninja on Win32.
+if (NOT (WIN32 AND CMAKE_GENERATOR STREQUAL "Ninja"))
 set(ARCHIVE_NAME ${CMAKE_PROJECT_NAME}-${pyside2_tools_VERSION})
 add_custom_target(dist
     COMMAND mkdir -p "${CMAKE_BINARY_DIR}/${ARCHIVE_NAME}" &&
@@ -74,6 +76,7 @@ add_custom_target(dist
             bzip2 -f9 "${CMAKE_BINARY_DIR}/${ARCHIVE_NAME}.tar" &&
             echo "Source package created at ${CMAKE_BINARY_DIR}/${ARCHIVE_NAME}.tar.bz2.\n"
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+endif()
 
 set(PYSIDE2RCC_EXECUTABLE ${CMAKE_CURRENT_BINARY_DIR}/pyrcc/pyside2-rcc)
 add_subdirectory(pyrcc)
