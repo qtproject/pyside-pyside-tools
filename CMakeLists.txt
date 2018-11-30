@@ -1,6 +1,11 @@
 cmake_minimum_required(VERSION 3.1)
 project(pyside2-tools)
 
+# Don't display "up-to-date / install" messages when installing, to reduce visual clutter.
+if (QUIET_BUILD)
+    set(CMAKE_INSTALL_MESSAGE NEVER)
+endif()
+
 find_package(Shiboken2 2.0.0 REQUIRED)
 find_package(Qt5 REQUIRED Core)
 find_package(PySide2 2.0.0 REQUIRED)
