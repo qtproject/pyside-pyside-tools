@@ -37,6 +37,8 @@
 #include <qdom.h>
 #include "rcc.h"
 
+#include <algorithm>
+
 static bool qt_rcc_write_number(FILE *out, quint32 number, int width)
 {
     int dividend = 1;
@@ -499,7 +501,7 @@ RCCResourceLibrary::writeDataStructure(FILE *out)
 
         //sort by hash value for binary lookup
         QList<RCCFileInfo*> children = file->children.values();
-        qSort(children.begin(), children.end(), qt_rcc_compare_hash);
+        std::sort(children.begin(), children.end(), qt_rcc_compare_hash);
 
         //write out the actual data now
         for(int i = 0; i < children.size(); ++i) {
@@ -518,7 +520,7 @@ RCCResourceLibrary::writeDataStructure(FILE *out)
 
         //sort by hash value for binary lookup
         QList<RCCFileInfo*> children = file->children.values();
-        qSort(children.begin(), children.end(), qt_rcc_compare_hash);
+        std::sort(children.begin(), children.end(), qt_rcc_compare_hash);
 
         //write out the actual data now
         for(int i = 0; i < children.size(); ++i) {
