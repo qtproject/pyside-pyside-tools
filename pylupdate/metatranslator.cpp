@@ -201,8 +201,7 @@ bool TsHandler::characters( const QString& ch )
 bool TsHandler::fatalError( const QXmlParseException& exception )
 {
     if ( ferrorCount++ == 0 ) {
-        QString msg;
-        msg.sprintf( "Parse error at line %d, column %d (%s).",
+        const QString msg = QString::asprintf( "Parse error at line %d, column %d (%s).",
                      exception.lineNumber(), exception.columnNumber(),
                      exception.message().toLatin1().data() );
         if ( qApp == 0 )

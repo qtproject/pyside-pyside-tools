@@ -835,11 +835,9 @@ bool UiHandler::characters( const QString& ch )
 
 bool UiHandler::fatalError( const QXmlParseException& exception )
 {
-    QString msg;
-    msg.sprintf( "Parse error at line %d, column %d (%s).",
-                 exception.lineNumber(), exception.columnNumber(),
-                 exception.message().toLatin1().data() );
-    fprintf( stderr, "XML error: %s\n", msg.toLatin1().data() );
+    fprintf(stderr, "XML error: Parse error at line %d, column %d (%s).\n",
+            exception.lineNumber(), exception.columnNumber(),
+            qPrintable(exception.message()));
     return false;
 }
 
