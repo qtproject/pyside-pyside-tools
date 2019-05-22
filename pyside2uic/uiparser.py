@@ -109,6 +109,12 @@ class UIParser(object):
         QtGui = QtGuiModule
         QtWidgets = QtWidgetsModule
 
+        self.column_counter = 0
+        self.row_counter = 0
+        self.item_nr = 0
+        self.itemstack = []
+        self.sorting_enabled = None
+
         self.reset()
 
     def uniqueName(self, name):
@@ -159,11 +165,6 @@ class UIParser(object):
         return obj
 
     def createWidget(self, elem):
-        self.column_counter = 0
-        self.row_counter = 0
-        self.item_nr = 0
-        self.itemstack = []
-        self.sorting_enabled = None
 
         widget_class = elem.attrib['class'].replace('::', '.')
         if widget_class == 'Line':
@@ -637,6 +638,7 @@ class UIParser(object):
                         (), False)
 
             if elem.tag == "column":
+                print(self.column_counter)
                 w.setHorizontalHeaderItem(self.column_counter, item)
 
                 if text:
