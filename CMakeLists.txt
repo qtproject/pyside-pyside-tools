@@ -27,16 +27,16 @@ if(CMAKE_HOST_APPLE)
 endif()
 
 # UIC stuff
-if (NOT SITE_PACKAGE)
+if (NOT PYTHON_SITE_PACKAGES)
     execute_process(
         COMMAND ${SHIBOKEN_PYTHON_INTERPRETER} -c "if True:
             from distutils import sysconfig
             from os.path import sep
             print(sysconfig.get_python_lib(1, 0, prefix='${CMAKE_INSTALL_PREFIX}').replace(sep, '/'))
             "
-        OUTPUT_VARIABLE SITE_PACKAGE
+        OUTPUT_VARIABLE PYTHON_SITE_PACKAGES
     OUTPUT_STRIP_TRAILING_WHITESPACE)
-    if (NOT SITE_PACKAGE)
+    if (NOT PYTHON_SITE_PACKAGES)
         message(FATAL_ERROR "Could not detect Python module installation directory.")
     endif()
 endif()
@@ -49,9 +49,9 @@ install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/pyside2-uic
         WORLD_EXECUTE WORLD_READ)
 
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/pyside2uic/__init__.py"
-        DESTINATION "${SITE_PACKAGE}/pyside2uic")
+        DESTINATION "${PYTHON_SITE_PACKAGES}/pyside2uic")
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/pyside2uic
-        DESTINATION ${SITE_PACKAGE}
+        DESTINATION ${PYTHON_SITE_PACKAGES}
         PATTERN "*.in" EXCLUDE
         PATTERN "*pyside2uic/*.1" EXCLUDE
         PATTERN "*pyside2uic/__init__.py" EXCLUDE
