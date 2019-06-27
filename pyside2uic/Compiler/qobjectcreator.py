@@ -89,6 +89,18 @@ class _CustomWidgetLoader(object):
     def __init__(self):
         self._widgets = {}
         self._usedWidgets = set()
+        self.pyside2_modules = ("Qt3DAnimation", "Qt3DCore", "Qt3DExtras", "Qt3DInput",
+            "Qt3DLogic", "Qt3DRender", "QtAxContainer", "QtCharts", "QtConcurrent",
+            "QtCore", "QtDataVisualization", "QtGui", "QtHelp", "QtLocation",
+            "QtMacExtras", "QtMultimedia", "QtMultimediaWidgets", "QtNetwork",
+            "QtOpenGL", "QtOpenGLFunctions", "QtPositioning", "QtPrintSupport",
+            "QtQml", "QtQuick", "QtQuickWidgets", "QtRemoteObjects", "QtScript",
+            "QtScriptTools", "QtScxml", "QtSensors", "QtSql", "QtSvg", "QtTest",
+            "QtTextToSpeech", "QtUiTools", "QtWebChannel", "QtWebEngine",
+            "QtWebEngineCore", "QtWebEngineWidgets", "QtWebKit", "QtWebKitWidgets",
+            "QtWebSockets", "QtWidgets", "QtWinExtras", "QtX11Extras", "QtXml",
+            "QtXmlPatterns")
+
 
     def addCustomWidget(self, widgetClass, baseClass, module):
         assert widgetClass not in self._widgets
@@ -128,6 +140,10 @@ class _CustomWidgetLoader(object):
             imports.setdefault(module, []).append(widget)
 
         for module, classes in imports.items():
+            split = module.split(".")
+            if (len(split) == 2 and not split[0].startswith("PySide2")
+                    and split[0] in self.pyside2_modules):
+                module = "PySide2.{}".format(split[0])
             write_code("from %s import %s" % (module, ", ".join(classes)))
 
 
