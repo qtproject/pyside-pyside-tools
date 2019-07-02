@@ -36,6 +36,8 @@ from pyside2uic.Compiler.qtproxies import (QtWidgets, QtGui, Literal,
 logger = logging.getLogger(__name__)
 DEBUG = logger.debug
 
+pyside2_modules = []  # will be updated by CompilerCreatorPolicy
+
 
 class _QtGuiWrapper(object):
     def search(clsname):
@@ -90,6 +92,7 @@ class _CustomWidgetLoader(object):
         self._widgets = {}
         self._usedWidgets = set()
 
+
     def addCustomWidget(self, widgetClass, baseClass, module):
         assert widgetClass not in self._widgets
         self._widgets[widgetClass] = (baseClass, module)
@@ -128,12 +131,17 @@ class _CustomWidgetLoader(object):
             imports.setdefault(module, []).append(widget)
 
         for module, classes in imports.items():
+            parts = module.split(".")
+            if (len(parts) == 2 and not parts[0].startswith("PySide2")
+                    and parts[0] in pyside2_modules):
+                module = "PySide2.{}".format(parts[0])
             write_code("from %s import %s" % (module, ", ".join(classes)))
 
 
 class CompilerCreatorPolicy(object):
-    def __init__(self):
+    def __init__(self, all_pyside2_modules):
         self._modules = []
+        pyside2_modules[:] = all_pyside2_modules
 
     def createQtGuiWrapper(self):
         return _QtGuiWrapper

@@ -32,9 +32,9 @@ from pyside2uic.Compiler.misc import write_import
 
 
 class UICompiler(UIParser):
-    def __init__(self):
+    def __init__(self, all_pyside2_modules):
         UIParser.__init__(self, qtproxies.QtCore, qtproxies.QtGui, qtproxies.QtWidgets,
-                CompilerCreatorPolicy())
+                CompilerCreatorPolicy(all_pyside2_modules))
 
     def reset(self):
         qtproxies.i18n_strings = []
