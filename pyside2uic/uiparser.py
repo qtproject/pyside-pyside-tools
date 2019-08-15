@@ -165,6 +165,12 @@ class UIParser(object):
         return obj
 
     def createWidget(self, elem):
+        # Reset variables per Widget
+        self.column_counter = 0
+        self.row_counter = 0
+        self.item_nr = 0
+        self.itemstack = []
+        self.sorting_enabled = None
 
         widget_class = elem.attrib['class'].replace('::', '.')
         if widget_class == 'Line':
