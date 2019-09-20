@@ -15,8 +15,6 @@ set(pyside2_tools_MINOR_VERSION "0")
 set(pyside2_tools_MICRO_VERSION "0")
 set(pyside2_tools_VERSION "${pyside2_tools_MAJOR_VERSION}.${pyside2_tools_MINOR_VERSION}.${pyside2_tools_MICRO_VERSION}")
 
-configure_file("pyside2uic/__init__.py.in" "${CMAKE_CURRENT_BINARY_DIR}/pyside2uic/__init__.py" @ONLY)
-
 option(BUILD_TESTS "Build tests." TRUE)
 
 if(CMAKE_HOST_APPLE)
@@ -41,27 +39,26 @@ if (NOT PYTHON_SITE_PACKAGES)
     endif()
 endif()
 
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/pyside2-uic
+# Handling .exe extension for Window and the uic/rcc executables
+if (WIN32)
+    set(EXE_EXT ".exe")
+else()
+    set(EXE_EXT "")
+endif()
+
+install(FILES "${_qt5Core_install_prefix}/bin/uic${EXE_EXT}"
         DESTINATION bin
         PERMISSIONS
         OWNER_EXECUTE OWNER_WRITE OWNER_READ
         GROUP_EXECUTE GROUP_READ
         WORLD_EXECUTE WORLD_READ)
 
-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/pyside2uic/__init__.py"
-        DESTINATION "${PYTHON_SITE_PACKAGES}/pyside2uic")
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/pyside2uic
-        DESTINATION ${PYTHON_SITE_PACKAGES}
-        PATTERN "*.in" EXCLUDE
-        PATTERN "*pyside2uic/*.1" EXCLUDE
-        PATTERN "*pyside2uic/__init__.py" EXCLUDE
-        PATTERN "*pyside2uic\\__init__.py" EXCLUDE)
-
-# Man pages for pyside2-uic
-if (NOT WIN32)
-    file(GLOB manpages "${CMAKE_CURRENT_SOURCE_DIR}/pyside2uic/*.1")
-    install(FILES ${manpages} DESTINATION share/man/man1)
-endif()
+install(FILES "${_qt5Core_install_prefix}/bin/rcc${EXE_EXT}"
+        DESTINATION bin
+        PERMISSIONS
+        OWNER_EXECUTE OWNER_WRITE OWNER_READ
+        GROUP_EXECUTE GROUP_READ
+        WORLD_EXECUTE WORLD_READ)
 
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/cmake_uninstall.cmake"
                "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
@@ -87,11 +84,9 @@ add_custom_target(dist
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 endif()
 
-set(PYSIDE2RCC_EXECUTABLE ${CMAKE_CURRENT_BINARY_DIR}/pyrcc/pyside2-rcc)
-add_subdirectory(pyrcc)
 add_subdirectory(pylupdate)
 
-# pyside2-rcc, shiboken and pyside2-lupdate entrypoints
+# pyside2-rcc, pyside2-uic, shiboken and pyside2-lupdate entrypoints
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/pyside_tool.py
         DESTINATION bin
         PERMISSIONS
