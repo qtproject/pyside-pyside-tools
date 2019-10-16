@@ -43,7 +43,8 @@ import os
 import subprocess
 
 from subprocess import Popen, PIPE
-import PySide2 as _
+import PySide2 as ref_mod
+
 
 def main():
     # This will take care of "pyside2-lupdate" listed as an entrypoint
@@ -53,11 +54,12 @@ def main():
     command.extend(sys.argv[1:])
     sys.exit(subprocess.call(command))
 
+
 def qt_tool_wrapper(qt_tool):
     # This will take care of "pyside2-uic" and "pyside2-rcc"
     # listed as an entrypoint in setup.py
-    pyside_dir = _.__file__.replace("__init__.py", "")
-    exe =  os.path.join(pyside_dir, qt_tool)
+    pyside_dir = os.path.dirname(ref_mod.__file__)
+    exe = os.path.join(pyside_dir, qt_tool)
 
     if len(sys.argv) > 1:
         args = " ".join(sys.argv[1:])
@@ -69,12 +71,14 @@ def qt_tool_wrapper(qt_tool):
             print("Error: {}\nwhile executing '{}'".format(msg, cmd))
         sys.exit(proc.returncode)
 
+
 def uic():
     qt_tool_wrapper("uic")
+
 
 def rcc():
     qt_tool_wrapper("rcc")
 
 
 if __name__ == "__main__":
-     main()
+    main()
