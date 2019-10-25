@@ -60,6 +60,13 @@ install(FILES "${_qt5Core_install_prefix}/bin/rcc${EXE_EXT}"
         GROUP_EXECUTE GROUP_READ
         WORLD_EXECUTE WORLD_READ)
 
+install(FILES "${_qt5Core_install_prefix}/bin/designer${EXE_EXT}"
+        DESTINATION bin
+        PERMISSIONS
+        OWNER_EXECUTE OWNER_WRITE OWNER_READ
+        GROUP_EXECUTE GROUP_READ
+        WORLD_EXECUTE WORLD_READ)
+
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/cmake_uninstall.cmake"
                "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
                IMMEDIATE @ONLY)
@@ -86,7 +93,7 @@ endif()
 
 add_subdirectory(pylupdate)
 
-# pyside2-rcc, pyside2-uic, shiboken and pyside2-lupdate entrypoints
+# pyside2-rcc, pyside2-uic, pyside2-designer, shiboken and pyside2-lupdate entrypoints
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/pyside_tool.py
         DESTINATION bin
         PERMISSIONS

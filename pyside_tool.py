@@ -56,7 +56,7 @@ def main():
 
 
 def qt_tool_wrapper(qt_tool, args):
-    # This will take care of "pyside2-uic" and "pyside2-rcc"
+    # Taking care of pyside2-uic, pyside2-rcc, and pyside2-designer
     # listed as an entrypoint in setup.py
     pyside_dir = os.path.dirname(ref_mod.__file__)
     exe = os.path.join(pyside_dir, qt_tool)
@@ -76,6 +76,10 @@ def uic():
 
 def rcc():
     qt_tool_wrapper("rcc", ['-g', 'python'] + sys.argv[1:])
+
+
+def designer():
+    qt_tool_wrapper("designer", sys.argv[1:])
 
 
 if __name__ == "__main__":
