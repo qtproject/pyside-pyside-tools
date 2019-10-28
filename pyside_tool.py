@@ -55,29 +55,27 @@ def main():
     sys.exit(subprocess.call(command))
 
 
-def qt_tool_wrapper(qt_tool):
+def qt_tool_wrapper(qt_tool, args):
     # This will take care of "pyside2-uic" and "pyside2-rcc"
     # listed as an entrypoint in setup.py
     pyside_dir = os.path.dirname(ref_mod.__file__)
     exe = os.path.join(pyside_dir, qt_tool)
 
-    if len(sys.argv) > 1:
-        args = " ".join(sys.argv[1:])
-        cmd = "{} -g python {}".format(exe, args)
-        proc = Popen(cmd.split(), stderr=PIPE)
-        out, err = proc.communicate()
-        if err:
-            msg = err.decode("utf-8")
-            print("Error: {}\nwhile executing '{}'".format(msg, cmd))
-        sys.exit(proc.returncode)
+    cmd = [exe] + args
+    proc = Popen(cmd, stderr=PIPE)
+    out, err = proc.communicate()
+    if err:
+        msg = err.decode("utf-8")
+        print("Error: {}\nwhile executing '{}'".format(msg, ' '.join(cmd)))
+    sys.exit(proc.returncode)
 
 
 def uic():
-    qt_tool_wrapper("uic")
+    qt_tool_wrapper("uic", ['-g', 'python'] + sys.argv[1:])
 
 
 def rcc():
-    qt_tool_wrapper("rcc")
+    qt_tool_wrapper("rcc", ['-g', 'python'] + sys.argv[1:])
 
 
 if __name__ == "__main__":
