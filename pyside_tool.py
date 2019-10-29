@@ -79,7 +79,10 @@ def rcc():
 
 
 def designer():
-    qt_tool_wrapper("designer", sys.argv[1:])
+    if sys.platform == "darwin":
+        qt_tool_wrapper("Designer.app/Contents/MacOS/Designer", sys.argv[1:])
+    else:
+        qt_tool_wrapper("designer", sys.argv[1:])
 
 
 if __name__ == "__main__":

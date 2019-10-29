@@ -46,26 +46,46 @@ else()
     set(EXE_EXT "")
 endif()
 
-install(FILES "${_qt5Core_install_prefix}/bin/uic${EXE_EXT}"
+set(TOOLS_PATH "${_qt5Core_install_prefix}/bin")
+set(UIC_PATH "${TOOLS_PATH}/uic${EXE_EXT}")
+set(RCC_PATH "${TOOLS_PATH}/rcc${EXE_EXT}")
+if (APPLE)
+    set(DESIGNER_PATH "${TOOLS_PATH}/Designer.app")
+else()
+    set(DESIGNER_PATH "${TOOLS_PATH}/designer${EXE_EXT}")
+endif()
+
+install(FILES "${UIC_PATH}"
         DESTINATION bin
         PERMISSIONS
         OWNER_EXECUTE OWNER_WRITE OWNER_READ
         GROUP_EXECUTE GROUP_READ
         WORLD_EXECUTE WORLD_READ)
 
-install(FILES "${_qt5Core_install_prefix}/bin/rcc${EXE_EXT}"
+install(FILES "${RCC_PATH}"
         DESTINATION bin
         PERMISSIONS
         OWNER_EXECUTE OWNER_WRITE OWNER_READ
         GROUP_EXECUTE GROUP_READ
         WORLD_EXECUTE WORLD_READ)
 
-install(FILES "${_qt5Core_install_prefix}/bin/designer${EXE_EXT}"
-        DESTINATION bin
-        PERMISSIONS
-        OWNER_EXECUTE OWNER_WRITE OWNER_READ
-        GROUP_EXECUTE GROUP_READ
-        WORLD_EXECUTE WORLD_READ)
+if (EXISTS ${DESIGNER_PATH})
+    if (APPLE)
+        install(DIRECTORY "${DESIGNER_PATH}"
+                DESTINATION bin
+                FILE_PERMISSIONS
+                OWNER_EXECUTE OWNER_WRITE OWNER_READ
+                GROUP_EXECUTE GROUP_READ
+                WORLD_EXECUTE WORLD_READ)
+    else()
+        install(FILES "${DESIGNER_PATH}"
+                DESTINATION bin
+                PERMISSIONS
+                OWNER_EXECUTE OWNER_WRITE OWNER_READ
+                GROUP_EXECUTE GROUP_READ
+                WORLD_EXECUTE WORLD_READ)
+    endif()
+endif()
 
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/cmake_uninstall.cmake"
                "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
