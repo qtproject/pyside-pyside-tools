@@ -38,6 +38,8 @@
 ## $QT_END_LICENSE$
 ##
 #############################################################################
+from __future__ import print_function
+
 import sys
 import os
 import subprocess
@@ -66,7 +68,7 @@ def qt_tool_wrapper(qt_tool, args):
     out, err = proc.communicate()
     if err:
         msg = err.decode("utf-8")
-        print("Error: {}\nwhile executing '{}'".format(msg, ' '.join(cmd)))
+        print(msg, file=sys.stderr)
     sys.exit(proc.returncode)
 
 
